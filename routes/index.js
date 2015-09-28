@@ -12,8 +12,9 @@ router.get('/register', function(req, res) {
     res.render('register', { });
 });
 
+//curl -H "Content-Type: application/json" -X POST -d '{"username":"reganhsu", "password":"ugh"}' http://localhost:3000/register
 router.post('/register', function(req, res) {
-    Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
+    Account.register(new Account({ username : req.body.username, active : req.body.active }), req.body.password, function(err, account) {
         if (err) {
         	return res.send("Sorry.  That username already exists.  Try again!");
           //return res.render("register", {info: "Sorry. That username already exists. Try again."});
@@ -30,7 +31,17 @@ router.get('/login', function(req, res) {
 });
 
 router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.redirect('/');
+   	//console.log(req["user"]);
+   	var ugh = Account.find({"username": req["user"]});
+   	console.log(ugh.active);
+
+
+    console.log("success!");
+    //res.send("Success!");
+    res.sendStatus(200);
+
+
+    //res.redirect('/');
 });
 
 router.get('/logout', function(req, res) {
