@@ -1,6 +1,7 @@
 var express = require('express');
 var passport = require('passport');
 var Account = require('../models/account');
+var auth = require('../routes/auth');
 var router = express.Router();
 
 
@@ -25,6 +26,9 @@ router.post('/register', function(req, res) {
         });
     });
 });
+
+router.post('/login1', auth.login);
+
 
 router.get('/login', function(req, res) {
     res.render('login', { user : req.user });

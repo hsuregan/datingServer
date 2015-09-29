@@ -33,6 +33,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Auth Middleware - This will check if the token is valid
+// Only the requests that start with /api/v1/* will be checked for the token.
+// Any URL's that do not follow the below pattern should be avoided unless you 
+// are sure that authentication is not needed
+app.all('/api/v1/*', [require('./middlewares/validateRequest')]);
 
 app.use('/', routes);
 
