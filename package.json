@@ -26,6 +26,7 @@
     "passport-local-mongoose": "*",
     "should": "*",
     "serve-favicon": "*",
-    "debug": "*"
+    "debug": "*",
+    "jwt-simple": "*"
   }
 }

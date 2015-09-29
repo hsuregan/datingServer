@@ -31,37 +31,30 @@ router.get('/login', function(req, res) {
 });
 
 router.post('/login', passport.authenticate('local'), function(req, res) {
-   	console.log("USERNAME:" + req["user"]["username"]);
    	var username = req["user"]["username"];
-   	// Account.returnAccount(username, function(err, account) {
-   	// 	console.log(account);
-   	// });
+   	console.log("USER ACCESS: " + req["user"]);
 
-//ask anumat about how to decifer this mongoose object..
    	Account.findOne({"username": username}, function(err, doc){
    	 	doc['active'] = true;
    	 	doc.save();
-   	 	console.log(doc);
-   	 	console.log("success!");
-   	 	//res.sendStatus(200);
-
-
    	});
 
-   	//Account.findOneAndUpdate(req["user"], {'active': true});
-
-   	//var ugh = Account.findOne(req["user"]);
-
-
-   	//console.log(ugh);
-
     res.sendStatus(200);
-
-    //res.send("Success!");
-
-
-    //res.redirect('/');
 });
+
+router.post('/logout', function(req, res){
+	var user = req["user"];
+	var username = req["user"]["username"];
+	console.log("logout of username: " + username);
+
+	Account.findOne({"username": username}, function(err, doc){
+   	 	doc['active'] = false;
+   	 	doc.save();
+   	});
+
+	res.logout(req);
+	res.sendStatus(200);
+})
 
 router.get('/logout', function(req, res) {
     req.logout();
