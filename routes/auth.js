@@ -19,26 +19,52 @@ var auth = {
     }
  
     // Fire a query to your DB and check if the credentials are valid
-    var dbUserObj = auth.validate(username, password);
-    console.log("auth func dbUserObj: " + dbUserObj);
+    //synchronize thread
+    //var dbUserObj = auth.validate(username, password);
+
+    Account.findOne({"username": username}, function(err, userObject){
+      //dbUserObj['active'] = true;
+      //dbUserObj.save();
+      var user = {
+        username: userObject["username"],
+      }
+      console.log("user: " + user);
+      
+      if(!userObject){
+          res.status(401);
+          res.json({
+            "status": 401,
+            "message": "Invalid credentials"
+          });
+          return;
+      }
+
+      if(userObject) {
+        res.json(genToken(userObject));
+      }
+
+      return user;
+    });
+
+    // if (!dbUserObj) { // If authentication fails, we send a 401 back
+    //   res.status(401);
+    //   res.json({
+    //     "status": 401,
+    //     "message": "Invalid credentials"
+    //   });
+    //   return;
+    // }
+ 
+    // if (dbUserObj) {
+    //   // If authentication is success, we will generate a token
+    //   // and dispatch it to the client
+ 
+    //   res.json(genToken(dbUserObj));
+    // }
+
 
    
-    if (!dbUserObj) { // If authentication fails, we send a 401 back
-      res.status(401);
-      res.json({
-        "status": 401,
-        "message": "Invalid credentials"
-      });
-      return;
-    }
- 
-    if (dbUserObj) {
- 
-      // If authentication is success, we will generate a token
-      // and dispatch it to the client
- 
-      res.json(genToken(dbUserObj));
-    }
+    
  
   },
  
@@ -50,8 +76,6 @@ var auth = {
       username: 'arvind@myapp.com'
     };
 
-    //return dbUserObj;
-
 
     //my implementation
     Account.findOne({"username": username}, function(err, userObject){
@@ -60,7 +84,7 @@ var auth = {
       var user = {
         username: userObject["username"],
       }
-      //console.log("user: " + user);
+      console.log("user: " + user);
 
       return user;
     });

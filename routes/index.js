@@ -27,7 +27,8 @@ router.post('/register', function(req, res) {
     });
 });
 
-router.post('/login1', auth.login);
+//curl -d '{"username":"hsuregan5", "password": "ugh"}' -H 'Content-type: application/json' http://localhost:3000/login1
+router.post('/login1', passport.authenticate('local'), auth.login);
 
 
 router.get('/login', function(req, res) {
