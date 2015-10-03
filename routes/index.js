@@ -56,17 +56,17 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
 });
 
 router.post('/logout', function(req, res){
-	var user = req["user"];
-	var username = req["user"]["username"];
-	console.log("logout of username: " + username);
+	console.log(req);
+  var username = req.body.username;
+	console.log(username);
 
 	Account.findOne({"username": username}, function(err, doc){
    	 	doc['active'] = false;
    	 	doc.save();
+      res.sendStatus(200);
   });
 
-	res.logout();
-	res.sendStatus(200);
+	//res.logout();
 })
 
 router.get('/logout', function(req, res) {
