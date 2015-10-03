@@ -23,13 +23,15 @@ var auth = {
     //var dbUserObj = auth.validate(username, password);
 
     Account.findOne({"username": username}, function(err, userObject){
-      //dbUserObj['active'] = true;
-      //dbUserObj.save();
-      var user = {
-        username: userObject["username"],
+      if(userObject['active'] == false) {
+        res.status(401);
+        res.json({
+          "status": 401,
+          "message": "This account it logged on somewhere else."
+        })
       }
-      console.log("user: " + user);
-      
+
+      userObject['active'] = true;
       if(!userObject){
           res.status(401);
           res.json({
@@ -43,9 +45,10 @@ var auth = {
         res.json(genToken(userObject));
       }
 
-      return user;
+      //return user;
     });
 
+//this logic is removed
     // if (!dbUserObj) { // If authentication fails, we send a 401 back
     //   res.status(401);
     //   res.json({
@@ -61,13 +64,10 @@ var auth = {
  
     //   res.json(genToken(dbUserObj));
     // }
-
-
-   
-    
  
   },
- 
+
+
   validate: function(username, password) {
     // spoofing the DB response for simplicity
     var dbUserObj = { // spoofing a userobject from the DB. 

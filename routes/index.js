@@ -42,9 +42,17 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
    	Account.findOne({"username": username}, function(err, doc){
    	 	doc['active'] = true;
    	 	doc.save();
+      if(!doc) {
+        res.sendStatus(200);
+      }
+      
+      if(doc) {
+        return doc;
+      }
+
    	});
 
-    res.sendStatus(200);
+//    res.sendStatus(200);
 });
 
 router.post('/logout', function(req, res){
@@ -55,9 +63,9 @@ router.post('/logout', function(req, res){
 	Account.findOne({"username": username}, function(err, doc){
    	 	doc['active'] = false;
    	 	doc.save();
-   	});
+  });
 
-	res.logout(req);
+	res.logout();
 	res.sendStatus(200);
 })
 
