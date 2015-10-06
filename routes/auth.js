@@ -23,15 +23,16 @@ var auth = {
     //var dbUserObj = auth.validate(username, password);
 
     Account.findOne({"username": username}, function(err, userObject){
-      if(userObject['active'] == false) {
-        res.status(401);
+      if(userObject['active'] == true) {
+        res.status(200);
         res.json({
-          "status": 401,
+          "status": 200,
           "message": "This account it logged on somewhere else."
         })
       }
 
       userObject['active'] = true;
+      userObject.save();
       if(!userObject){
           res.status(401);
           res.json({
@@ -104,6 +105,7 @@ var auth = {
  
     return dbUserObj;
   },
+
 }
  
 // private method

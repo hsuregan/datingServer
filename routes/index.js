@@ -28,13 +28,16 @@ router.post('/register', function(req, res) {
 });
 
 //curl -d '{"username":"hsuregan5", "password": "ugh"}' -H 'Content-type: application/json' http://localhost:3000/login1
+//THIS ONE
 router.post('/login1', passport.authenticate('local'), auth.login);
 
-
+//Ignore
 router.get('/login', function(req, res) {
     res.render('login', { user : req.user });
 });
 
+
+//ignore 
 router.post('/login', passport.authenticate('local'), function(req, res) {
    	var username = req["user"]["username"];
    	console.log("USER ACCESS: " + req["user"]);
