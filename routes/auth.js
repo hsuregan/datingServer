@@ -8,7 +8,7 @@ var auth = {
  
     var username = req.body.username || '';
     var password = req.body.password || '';
- 
+
     if (username == '' || password == '') {
       res.status(401);
       res.json({
@@ -43,7 +43,10 @@ var auth = {
       }
 
       if(userObject) {
-        res.json(genToken(userObject));
+        var token = genToken(userObject);
+        userObject['token'] = token;
+        userObject.save();
+        res.json(token);
       }
 
       //return user;

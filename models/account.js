@@ -5,7 +5,9 @@ var Schema = mongoose.Schema;
 var Account = new Schema({
     username: String,
     active: Boolean,
-    password: String
+    password: String,
+
+    token: String
 }, {collection: 'accounts'});
 
 //'accounts' references the collection in Mongodb

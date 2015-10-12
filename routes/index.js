@@ -4,14 +4,16 @@ var Account = require('../models/account');
 var auth = require('../routes/auth');
 var router = express.Router();
 
+//////////
+//STORE TOKEN IN THE DB 
+/////
+
+
 
 router.get('/', function (req, res) {
     res.render('index', { user : req.user });
 });
 
-router.get('/register', function(req, res) {
-    res.render('register', { });
-});
 
 //curl -H "Content-Type: application/json" -X POST -d '{"username":"reganhsu", "password":"ugh"}' http://localhost:3000/register
 router.post('/register', function(req, res) {
@@ -22,7 +24,9 @@ router.post('/register', function(req, res) {
         }
 
         passport.authenticate('local')(req, res, function () {
-            res.redirect('/');
+          res.json(account);
+            //res.post('/login1', passport.authenticate('local'), auth.login)
+            //res.redirect('/');
         });
     });
 });
@@ -42,8 +46,8 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
    	var username = req["user"]["username"];
    	console.log("USER ACCESS: " + req["user"]);
 
-   	Account.findOne({"username": username}, function(err, doc){
-   	 	doc['active'] = true;
+   	Account.findOne({"username": username}, function(err, doc){ 
+  	 	doc['active'] = true;
    	 	doc.save();
       if(!doc) {
         res.sendStatus(200);
